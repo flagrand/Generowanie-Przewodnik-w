@@ -1,4 +1,5 @@
 import os
+import sys
 import customtkinter as ctk
 from tkinter import filedialog
 from reportlab.pdfgen import canvas
@@ -6,6 +7,18 @@ import psycopg2
 from dotenv import load_dotenv
 
 load_dotenv()
+
+def resource_path(relative_path):
+    """ Zwraca absolutną ścieżkę do zasobu (działa też po spakowaniu jako .exe) """
+    try:
+        base_path = sys._MEIPASS  # tymczasowy katalog przy uruchomieniu .exe
+    except AttributeError:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+from dotenv import load_dotenv
+load_dotenv(dotenv_path=resource_path(".env"))
 
 def polacz_z_baza():
     try:
@@ -18,7 +31,7 @@ def polacz_z_baza():
         )
         return conn
     except Exception as e:
-        print("❌ Błąd połączenia z bazą:", e)
+        print("Błąd połączenia z bazą:", e)
         return None
 
 def generuj_i_zapisz_pdf():
@@ -74,7 +87,7 @@ ctk.set_default_color_theme("blue")
 okno = ctk.CTk()
 okno.title("Generowanie przewodników")
 okno.geometry("900x600")
-okno.iconbitmap("img/wiss_small_icon.ico")
+okno.iconbitmap(resource_path("img/wiss_small_icon.ico"))
 
 historia_wpisow = []
 

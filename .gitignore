@@ -1,2 +1,6 @@
 .venv
 DB.env
+build
+dist
+app.spec
+info.txt
